@@ -33,13 +33,13 @@ exports.signin = catchAsync(async (req, res, next) => {
 exports.signup = catchAsync(async(req, res, next) => {
 
         const {email} = req.body;
-        const usu = await User.find({email: email})  
+        const user = await User.find({email: email})  
 
-        if (usu[0]) {
+        if (user[0]) {
             return next(new AppError("Email déjà utilisé", 404)) 
         }
 
-        const token = jwt.sign({id: usu._id}, process.env.JWT, {expiresIn: "30d"})    
+        const token = jwt.sign({id: user._id}, process.env.JWT, {expiresIn: "30d"})    
         const createUser = new User(req.body)
         await createUser.save()
 
